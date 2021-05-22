@@ -1,6 +1,6 @@
 # DyCo3d
 ## DyCo3d: Robust Instance Segmentation of 3D Point Clouds through Dynamic Convolution (CVPR 2021)
-![overview](https://github.com/aim-uofa/DyCo3D/blob/master/doc/dyco3d.png)
+![overview](https://github.com/aim-uofa/DyCo3D/doc/dyco3d.png)
 
 Code for the paper **DyCo3D: Robust Instance Segmentation of 3D Point Clouds through Dynamic Convolution**, CVPR 2021.
 
@@ -166,17 +166,11 @@ Quantitative results on ScanNet test set at the submisison time.
 ## Citation
 If you find this work useful in your research, please cite:
 ```
-@inproceedings{wang2020densecl,
+@inproceedings{He2021dyco3d,
   title     =   {{DyCo3d}: Robust Instance Segmentation of 3D Point Clouds through Dynamic Convolution},
   author    =   {Tong He and Chunhua Shen and Anton van den Hengel},
   booktitle =   {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
   year      =   {2021}
-}
-@inproceedings{jiang2020pointgroup,
-  title={PointGroup: Dual-Set Point Grouping for 3D Instance Segmentation},
-  author={Jiang, Li and Zhao, Hengshuang and Shi, Shaoshuai and Liu, Shu and Fu, Chi-Wing and Jia, Jiaya},
-  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
-  year={2020}
 }
 ```
 
