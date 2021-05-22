@@ -121,37 +121,15 @@ DyCo3D
 
 ## Training
 ```
-CUDA_VISIBLE_DEVICES=0,1,2 python -m torch.distributed.launch --nproc_per_node=3 --master_port=$((RANDOM + 10000)) train.py --config config2/pointgroup_multigpu_condinst_run5_scannet.yaml  --output_path OUTPUT_DIR  --use_backbone_transformer
+CUDA_VISIBLE_DEVICES=0,1,2 python -m torch.distributed.launch --nproc_per_node=3 --master_port=$((RANDOM + 10000)) train.py --config config/pointgroup_multigpu_scannet.yaml  --output_path OUTPUT_DIR  --use_backbone_transformer
 ```
 
 
 ## Inference and Evaluation
-
-(1) If you want to evaluate on validation set, prepare the `.txt` instance ground-truth files as the following.
+To test with a pretrained model, run
 ```
-cd dataset/scannetv2
-python prepare_data_inst_gttxt.py
+CUDA_VISIBLE_DEVICES=0 python test.py --config config/pointgroup_multigpu_condinst_scannet.yaml --output_path exp/model --resume MODEL --use_backbone_transforme
 ```
-Make sure that you have prepared the `[scene_id]_inst_nostuff.pth` files before. 
-
-(2) Test and evaluate. 
-
-a. To evaluate on validation set, set `split` and `eval` in the config file as `val` and `True`. Then run 
-```
-CUDA_VISIBLE_DEVICES=0 python test.py --config config/pointgroup_run1_scannet.yaml
-```
-An alternative evaluation method is to set `save_instance` as `True`, and evaluate with the ScanNet official [evaluation script](https://github.com/ScanNet/ScanNet/blob/master/BenchmarkScripts/3d_evaluation/evaluate_semantic_instance.py).
-
-b. To run on test set, set (`split`, `eval`, `save_instance`) as (`test`, `False`, `True`). Then run
-```
-CUDA_VISIBLE_DEVICES=0 python test.py --config config/pointgroup_run1_scannet.yaml
-```
-
-c. To test with a pretrained model, run
-```
-CUDA_VISIBLE_DEVICES=0 python test.py --config config/pointgroup_default_scannet.yaml --pretrain $PATH_TO_PRETRAIN_MODEL$
-```
-
 ## Pretrained Model
 We provide a pretrained model trained on ScanNet v2 dataset. Download it [here](https://cloudstor.aarnet.edu.au/plus/s/nza0IvigppngfkC). Its performance on ScanNet v2 validation set is 35.5/57.6/72.9 in terms of mAP/mAP50/mAP25. (with a masking head size of 16)
 
