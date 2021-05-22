@@ -1,6 +1,6 @@
 # DyCo3d
 ## DyCo3d: Robust Instance Segmentation of 3D Point Clouds through Dynamic Convolution (CVPR 2021)
-![overview](https://github.com/aim-uofa/DyCo3D/doc/dyco3d.png)
+![overview](https://github.com/aim-uofa/DyCo3D/blob/main/doc/dyco3d.png)
 
 Code for the paper **DyCo3D: Robust Instance Segmentation of 3D Point Clouds through Dynamic Convolution**, CVPR 2021.
 
