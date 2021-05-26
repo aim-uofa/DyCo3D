@@ -121,14 +121,14 @@ DyCo3D
 
 ## Training
 ```
-CUDA_VISIBLE_DEVICES=0,1,2 python -m torch.distributed.launch --nproc_per_node=3 --master_port=$((RANDOM + 10000)) train.py --config config/pointgroup_multigpu_scannet.yaml  --output_path OUTPUT_DIR  --use_backbone_transformer
+CUDA_VISIBLE_DEVICES=0,1,2 python -m torch.distributed.launch --nproc_per_node=3 --master_port=$((RANDOM + 10000)) train.py --config config/dyco3d_multigpu_scannet.yaml  --output_path OUTPUT_DIR  --use_backbone_transformer
 ```
 
 
 ## Inference and Evaluation
 To test with a pretrained model, run
 ```
-CUDA_VISIBLE_DEVICES=0 python test.py --config config/pointgroup_multigpu_scannet.yaml --output_path exp/model --resume MODEL --use_backbone_transforme
+CUDA_VISIBLE_DEVICES=0 python test.py --config config/dyco3d_multigpu_scannet.yaml --output_path exp/model --resume MODEL --use_backbone_transforme
 ```
 ## Pretrained Model
 We provide a pretrained model trained on ScanNet v2 dataset. Download it [here](https://cloudstor.aarnet.edu.au/plus/s/nza0IvigppngfkC). Its performance on ScanNet v2 validation set is 35.5/57.6/72.9 in terms of mAP/mAP50/mAP25. (with a masking head size of 16)
