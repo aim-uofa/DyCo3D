@@ -205,12 +205,12 @@ if __name__ == '__main__':
     logger.info('=> creating model ...')
     logger.info('Classes: {}'.format(cfg.classes))
 
-    if model_name == 'pointgroup':
-        from model.pointgroup.pointgroup import PointGroup as Network
-        from model.pointgroup.pointgroup import model_fn_decorator
-    else:
-        print("Error: no model version " + model_name)
-        exit(0)
+    #if model_name == 'pointgroup':
+    from model.pointgroup.pointgroup import PointGroup as Network
+    from model.pointgroup.pointgroup import model_fn_decorator
+    #else:
+    #    print("Error: no model version " + model_name)
+    #    exit(0)
     model = Network(cfg)
 
     use_cuda = torch.cuda.is_available()
