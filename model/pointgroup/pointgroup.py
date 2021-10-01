@@ -12,6 +12,15 @@ from util import utils
 import numpy as np
 from model.transformer import TransformerEncoder
 
+def dice_coefficient(x, target, weight):
+    eps = 1e-5
+    # n_inst = x.size(0)
+    # x = x.reshape(n_inst, -1)
+    # target = target.reshape(n_inst, -1)
+    intersection = (x * target).sum()
+    union = (x ** 2.0).sum() + (target ** 2.0).sum() + eps
+    loss = 1. - (2 * intersection / union)
+    return loss
 
 class ResidualBlock(SparseModule):
     def __init__(self, in_channels, out_channels, norm_fn, indice_key=None):
@@ -830,6 +839,9 @@ def model_fn_decorator(test=False):
             score_loss = score_loss.mean()
             loss_out['score_loss'] = (score_loss, proposals_offset_shift.size(0)-1)
             loss += (cfg.loss_weight[3] * score_loss)
+
+            dice_loss = dice_coefficient(torch.sigmoid(mask_logits.view(-1)), inst_gt_mask.view(-1), weights.view(-1))
+            loss_out['dice_loss'] = (dice_loss, dice_loss.new_tensor(1.0))
 
 
 
