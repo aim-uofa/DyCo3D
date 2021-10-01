@@ -12,13 +12,13 @@ from util import utils
 import numpy as np
 from model.transformer import TransformerEncoder
 
-def dice_coefficient(x, target, weight):
+def dice_coefficient(x, target):
     eps = 1e-5
-    # n_inst = x.size(0)
-    # x = x.reshape(n_inst, -1)
-    # target = target.reshape(n_inst, -1)
-    intersection = (x * target).sum()
-    union = (x ** 2.0).sum() + (target ** 2.0).sum() + eps
+    n_inst = 1
+    x = x.reshape(n_inst, -1)
+    target = target.reshape(n_inst, -1)
+    intersection = (x * target).sum(dim=1)
+    union = (x ** 2.0).sum(dim=1) + (target ** 2.0).sum(dim=1) + eps
     loss = 1. - (2 * intersection / union)
     return loss
 
@@ -742,7 +742,7 @@ def model_fn_decorator(test=False):
         loss_out['offset_dir_loss'] = (offset_dir_loss, valid.sum())
 
         loss = cfg.loss_weight[0] * semantic_loss + cfg.loss_weight[1] * offset_norm_loss + cfg.loss_weight[2] * offset_dir_loss
-
+        dice_loss = offset_dir_loss.new_tensor(0.0)
         if (epoch > cfg.prepare_epochs):
 
             proposals_idx_shift = loss_inp['proposals_idx_shift']
@@ -780,7 +780,7 @@ def model_fn_decorator(test=False):
                 write_ply_color(coords_np, ins_label_np, 'ins.obj')
                 write_ply_color(coords_np, seg_label_np, 'seg.obj')
 
-
+            valid_num = 0
             assert inst_pred_seg_label.size(0) == inst_num
             for n in range(inst_num):
                 start = proposals_offset_shift[n].item()
@@ -805,7 +805,12 @@ def model_fn_decorator(test=False):
 
                 if cover_percent > 0.3:
                     inst_gt_mask[n] = (instance_masked ==ins_label_n)
-
+                valid_id = (weights[n]>0).nonzero().squeeze(dim=1)
+                if valid_id.size(0) >0:
+                    inst_gt = inst_gt_mask[n][valid_id]
+                    inst_pred = torch.sigmoid(mask_logits[n])[valid_id]
+                    dice_loss += dice_coefficient(inst_pred, inst_gt).mean()
+                    valid_num += 1
 
                 if DEBUG:
                     sel_batch_id = 0
@@ -840,8 +845,9 @@ def model_fn_decorator(test=False):
             loss_out['score_loss'] = (score_loss, proposals_offset_shift.size(0)-1)
             loss += (cfg.loss_weight[3] * score_loss)
 
-            dice_loss = dice_coefficient(torch.sigmoid(mask_logits.view(-1)), inst_gt_mask.view(-1), weights.view(-1))
-            loss_out['dice_loss'] = (dice_loss, dice_loss.new_tensor(1.0))
+            dice_loss = dice_loss / valid_num
+            loss += dice_loss
+            loss_out['dice_loss'] = (dice_loss, 1)
 
 
 
