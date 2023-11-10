@@ -131,7 +131,7 @@ To test with a pretrained model, run
 CUDA_VISIBLE_DEVICES=0 python test.py --config config/dyco3d_multigpu_scannet.yaml --output_path exp/model --resume MODEL --use_backbone_transforme
 ```
 ## Pretrained Model
-We provide a pretrained model trained on ScanNet v2 dataset. Download it [here](https://cloudstor.aarnet.edu.au/plus/s/nza0IvigppngfkC). Its performance on ScanNet v2 validation set is 35.5/57.6/72.9 in terms of mAP/mAP50/mAP25. (with a masking head size of 16)
+We provide a pretrained model trained on ScanNet v2 dataset. Download it [here](https://pan.baidu.com/s/1lEsErAMuGM9JW9-O9bNXmQ?pwd=cbx4). Its performance on ScanNet v2 validation set is 35.5/57.6/72.9 in terms of mAP/mAP50/mAP25. (with a masking head size of 16)
 
 
 
